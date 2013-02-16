@@ -78,10 +78,6 @@ public class ZombieHandler implements Listener {
 				//40% des épées ont du kb.
 				if(Math.random()<0.4) zombMC.getEquipment(0).addEnchantment(Enchantment.KNOCKBACK, randomize(2));
 				
-				//test
-				
-				//Enchantment Test = new EnchantmentTest(90, 10, 0);
-				//zombMC.getEquipment(0).addEnchantment(Test, 11);
 			}
 			
 			//10% d'avoir chaque pièce d'armure.

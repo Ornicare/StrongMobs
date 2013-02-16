@@ -1,11 +1,8 @@
 package fr.ornicare;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.minecraft.server.v1_4_R1.Enchantment;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,26 +25,6 @@ public class MobHandler extends JavaPlugin{
 		
 		// Registering the config file
 		CONFIG = this.getConfig();
-		
-		/*for(Field f :ItemPickaxe.class.getDeclaredFields()) {
-			LOGGER.log(Level.INFO,f.getName()+" "+f.getType());
-		}
-		ItemPickaxe.DIAMOND_PICKAXE.*/
-		
-		//test
-		
-		try {
-			for(Field f : Enchantment.class.getDeclaredFields()) {
-				LOGGER.log(Level.INFO,f.getName()+" "+f.getType());
-			}
-			for(Field f : Enchantment.class.getFields()) {
-				LOGGER.log(Level.INFO,f.getName()+" "+f.getType());
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		
 		//Loading the activated part of the plugin
 		LOGGER.log(Level.INFO,CONFIG.getString("Loading_Message"));
