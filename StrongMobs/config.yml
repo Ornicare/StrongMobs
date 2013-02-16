@@ -1,0 +1,7 @@
+# default config.yml
+Loading_Message: 'Loading config.yml'
+Activated:
+  - zombie
+  - skeleton
+  - creeper
+  - player
