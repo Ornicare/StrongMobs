@@ -1,0 +1,61 @@
+Rq : rewrite config accessor
+
+MobHandler (factory) : load les skeletons dans un Map<Integer,MobModel> skeletonsModels = new HashMap<Integer,MobModel>();
+Un mob model c'est une classe de données contenant : 
+
+- Les effets de potions à appliquer au spawn
+- L'équipement
+	- et son enchantement
+- diverses options : 
+	- multispawn
+	- multi death
+	- event (blood moon)
+	- vie max (en scale* de mob.getHealth())
+	- effets si dégats pris,....
+	- + choses spé : baby pour zombie, electrique pour creeper,....
+	
+Le mob model prend en argument : 
+	- un set<String> renvoyé par (new ConfigAccessor(qqch, qqcg)).getConfig().getKeys()
+    Il le parse pour se remplir.
+    
+    => Utilisation d'une fonction de correspondance nom_item <=> ID, idem pour potions (string <> "id") et enchantements.
+    
+Le mobHandler parse les autres types de mobs
+
+SuperZombie:
+  spawnweigh: 10
+  equipement:
+  	weapon:
+  	  type: DIAMOND_SWORD
+  	  enchantements:
+  	    'FLAME': 100 #Mouhaha
+  	    'SHARPNESS': 2000
+  	armor:
+  	  helmet:
+  	  	type: DIAMOND_HELMET
+  	  	enchantements:
+  	  	  'ENVIRONMENTAL_PROTECTION': 1000000
+  	effects:
+  	  'SPEED': 100
+  	  'INSTANT_HEALTH': 100
+  	spawnmultiplicator: 0.1 #if one superZombie spawn, a new SuperZombie can appear with a probablility of 10%   /!\ Keep this value below 0.9.  //Auto vérif !
+  	spawnondeath: #When a SuperZombie die, it has a probability of 20% to rebirth in 3 little ZOMBIE with half-life
+  	  probability: 0.2
+  	  maxnumber: 3
+  	  healthmultiplicator: 0.5
+  	health: 100
+
+
+Un fichier de config peut contenir des events. (exp dans celui des zombies)
+events:
+  bloodMoon:
+  	message: "The blood moon is rising"
+  	weigh: 1 #1/X per tick
+  	spawnratemultiplicator: 100
+  	healthmultiplicator: 100
+  	potionseffectsmultiplicator: 100
+  	strenghmultiplicator: 100
+  	enchantementadder: 10 #add 10 to all enchants.
+  	  	
+  	  	
+  	  

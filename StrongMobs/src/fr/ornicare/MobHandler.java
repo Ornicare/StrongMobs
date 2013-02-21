@@ -6,6 +6,9 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.Yaml;
+
+import fr.ornicare.yaml.ConfigAccessor;
 
 
 
@@ -25,6 +28,7 @@ public class MobHandler extends JavaPlugin{
 		
 		// Registering the config file
 		CONFIG = this.getConfig();
+		
 		
 		//Loading the activated part of the plugin
 		LOGGER.log(Level.INFO,CONFIG.getString("Loading_Message"));

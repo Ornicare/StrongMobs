@@ -14,6 +14,8 @@ import org.bukkit.potion.PotionEffectType;
 
 
 public class CreeperHandler implements Listener {
+	
+
 	//First of all, listen to the CreatureSpawnEvent
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(final CreatureSpawnEvent e) {
