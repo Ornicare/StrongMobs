@@ -6,9 +6,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.Yaml;
 
-import fr.ornicare.yaml.ConfigAccessor;
+import cconsole.CConsole;
 
 
 
@@ -19,6 +18,8 @@ public class MobHandler extends JavaPlugin{
 	public static FileConfiguration CONFIG;
 	
 	public void onEnable() {
+		
+		CConsole.load();
 	
 		// Save a copy of the default config.yml if one is not there
 		this.saveDefaultConfig();
