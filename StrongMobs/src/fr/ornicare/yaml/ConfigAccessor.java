@@ -21,18 +21,16 @@ package fr.ornicare.yaml;
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 * SOFTWARE.
 */
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import cconsole.CConsole;
  
 public class ConfigAccessor {
  
@@ -89,6 +87,14 @@ public class ConfigAccessor {
         if (!configFile.exists()) {            
             this.plugin.saveResource(fileName, false);
         }
+    }
+    
+    public List<String> getMobList() {
+    	List<String> mobList = new ArrayList<String>();
+    	for(String s : fileConfiguration.getKeys(true)) {
+			if(!s.contains(".")) mobList.add(s);
+		}
+    	return mobList;
     }
  
 }
