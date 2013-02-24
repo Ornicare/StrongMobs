@@ -1,3 +1,8 @@
 name: StrongMobs
 main: fr.ornicare.MobHandler
 version: 1.4.7
+commands:
+   bloodmoon:
+      description: Active la bloodmoon. La desactivation se fait avec une difficulte de 0
+      permission: strongmobs.bloodmoon
+      usage: /bloodmoon [difficulty:0-10]

@@ -21,14 +21,18 @@ package fr.ornicare.yaml;
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 * SOFTWARE.
 */
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
- 
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import cconsole.CConsole;
  
 public class ConfigAccessor {
  
@@ -48,18 +52,18 @@ public class ConfigAccessor {
         File dataFolder = plugin.getDataFolder();
         if (dataFolder == null)
             throw new IllegalStateException();
-        this.configFile = new File(plugin.getDataFolder(), fileName);
+        configFile = new File(plugin.getDataFolder(), fileName);
     }
  
     public void reloadConfig() {        
-        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
- 
-        // Look for defaults in the jar
-        InputStream defConfigStream = plugin.getResource(fileName);
-        if (defConfigStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-            fileConfiguration.setDefaults(defConfig);
-        }
+    	fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+	 
+	    // Look for defaults in the jar
+	    InputStream defConfigStream = plugin.getResource(fileName);
+	    if (defConfigStream != null) {
+	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	        fileConfiguration.setDefaults(defConfig);
+	    }
     }
  
     public FileConfiguration getConfig() {
