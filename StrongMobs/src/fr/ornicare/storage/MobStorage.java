@@ -8,6 +8,9 @@ import fr.ornicare.util.RandomizerMobsMap;
 
 public abstract class MobStorage {
 	
+	//Skeleton store
+	public static RandomizerMobsMap SKELETONS = new RandomizerMobsMap();
+
 	//Zombies store
 	public static RandomizerMobsMap ZOMBIES = new RandomizerMobsMap();
 	

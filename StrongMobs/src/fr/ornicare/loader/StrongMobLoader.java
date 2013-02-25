@@ -8,9 +8,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import cconsole.CConsole;
+import fr.ornicare.handlers.SkeletonHandler;
 import fr.ornicare.handlers.ZombieHandler;
 import fr.ornicare.models.MobModel;
 import fr.ornicare.models.PotionEffectModel;
+import fr.ornicare.models.SkeletonModel;
 import fr.ornicare.models.ZombieModel;
 import fr.ornicare.storage.MobStorage;
 import fr.ornicare.yaml.ConfigAccessor;
@@ -57,10 +59,11 @@ public class StrongMobLoader extends JavaPlugin{
         	 		LOGGER.log(Level.INFO,"Player modifier loaded !");
         	 		break;
         	 	case "zombie":
-        			loadzombies();
-        			
+        			loadZombies();
+        			LOGGER.log(Level.INFO,"Zombie modifier loaded !");
         	 		break;
         	 	case "skeleton":
+        	 		loadSkeletons();
         	        LOGGER.log(Level.INFO,"Skeleton modifier loaded !");
         	 		break;
         	 	case "creeper":
@@ -72,9 +75,35 @@ public class StrongMobLoader extends JavaPlugin{
 	}
 	
 	/**
+	 * Load skeletons models
+	 */
+	private void loadSkeletons() {
+		//Create the config file manager.
+		ConfigAccessor skeletonConfigFile = new ConfigAccessor(this, "skeletons.yml");
+		
+		//If the config file doesn't exists, create it.
+		skeletonConfigFile.saveDefaultConfig();
+		
+		//get it.
+		FileConfiguration skeletonConfig = skeletonConfigFile.getConfig();
+		
+		//get the list of zombies and load it
+		for(String s : skeletonConfigFile.getMobList()) {
+			SkeletonModel skeleton = (SkeletonModel) genericMobLoader(new SkeletonModel(), s, skeletonConfig);
+	
+			//Store the new zombie !
+			MobStorage.SKELETONS.push(skeletonConfig.getInt(s+".spawnweigh"), skeleton);	
+		}
+		
+		//Create the handler.
+		this.getServer().getPluginManager().registerEvents(new SkeletonHandler(), this);
+		
+	}
+
+	/**
 	 * Load all zombies models.
 	 */
-	private void loadzombies() {
+	private void loadZombies() {
 		//Create the config file manager.
 		ConfigAccessor zombieConfigFile = new ConfigAccessor(this, "zombies.yml");
 		
@@ -88,6 +117,9 @@ public class StrongMobLoader extends JavaPlugin{
 		for(String s : zombieConfigFile.getMobList()) {
 			ZombieModel zombie = (ZombieModel) genericMobLoader(new ZombieModel(), s, zombieConfig);
 
+			// /!\ Specific to zombie : probanility to get a mini zombie.
+			zombie.setChildChance(zombieConfig.getDouble(s+".childchance"));
+			
 			//Store the new zombie !
 			MobStorage.ZOMBIES.push(zombieConfig.getInt(s+".spawnweigh"), zombie);	
 		}
@@ -112,6 +144,7 @@ public class StrongMobLoader extends JavaPlugin{
 
 		//load effects to apply
 		mmodel = potionEffectLoader(mmodel, mobName,fileConfig);
+		
 		return mmodel;
 	}
 	
@@ -160,10 +193,11 @@ public class StrongMobLoader extends JavaPlugin{
 		String equipmentpiece = idToPath[id];
 		
 		//Get the dropChance
-		float itemDropChance = (float)(fileConfig.getString(mobName+".equipment."+equipmentpiece+".dropchance")!=""?fileConfig.getDouble(mobName+".equipment."+equipmentpiece+".dropchance"):-1);
-
+		float itemDropChance = (float)(fileConfig.getString(mobName+".equipment."+equipmentpiece+".dropchance")!=null?fileConfig.getDouble(mobName+".equipment."+equipmentpiece+".dropchance"):-1);
+		
 		//Get the bukkit representation of the id.
 		int itemId = fileConfig.getInt(mobName+".equipment."+equipmentpiece+".type");
+		
 		if(itemId!=0){
 			mmodel.setItem(id,itemId,fileConfig.getDouble(mobName+".equipment."+equipmentpiece+".probability"),itemDropChance);
 		}

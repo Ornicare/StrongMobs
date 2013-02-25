@@ -4,8 +4,8 @@ import net.minecraft.server.v1_4_R1.EntityZombie;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftZombie;
 import org.bukkit.craftbukkit.v1_4_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_4_R1.entity.CraftZombie;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -37,7 +37,7 @@ public class ZombieHandler implements Listener {
 	        
 	        //Use the spawnmultiplicator
 	        if(Math.random() < zombieMod.getSpawnmultiplicator()) {
-	            spawnAtTheSamePlace(zomb);     
+	            spawnAtTheSamePlace(zomb);
 	        }
 	        
 	        //store spawnondeath

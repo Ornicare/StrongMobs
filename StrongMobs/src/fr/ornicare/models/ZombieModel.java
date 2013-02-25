@@ -5,6 +5,11 @@ import net.minecraft.server.v1_4_R1.MobEffect;
 
 public class ZombieModel extends MobModel {
 	
+	/**
+	 * Chance to be a mini zombie.
+	 */
+	private double childChance;
+	
 	public ZombieModel() {
 		super();
 	}
@@ -21,6 +26,17 @@ public class ZombieModel extends MobModel {
 			zombie.addEffect(new MobEffect(pE.getEnchantment().getId(),2000000000,pE.getEnchantmentLevel()));
 		}
 		
+		//It is a child ?
+		if(Math.random()<childChance) zombie.setBaby(true);
+		
 		return zombie;
+	}
+	
+	public void setChildChance(double cchance) {
+		this.childChance = cchance;	
+	}
+
+	public double getChildChance() {
+		return childChance;
 	}
 }

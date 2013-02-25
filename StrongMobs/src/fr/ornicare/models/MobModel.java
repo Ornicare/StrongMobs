@@ -152,5 +152,4 @@ public abstract class MobModel {
 		return entity;
 	}
 
-
 }

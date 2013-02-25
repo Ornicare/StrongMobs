@@ -1,6 +1,6 @@
 superzombie:
   spawnweigh: 10
-  spawnmultiplicator: 0.9
+  spawnmultiplicator: 0.1
   health: 100
   effects:
     - SPEED, 10
@@ -25,14 +25,16 @@ superzombie:
           - FIRE_ASPECT, 10
           - 0, 20
 simplezomb:
-  spawnmultiplicator: 0.9
+  spawnmultiplicator: 0.0
   spawnweigh: 100
+  spawnondeath: #When a SuperZombie die, it has a probability of 100% to rebirth in 3 ZOMBIE with half-life
+    probability: 1.0
+    maxnumber: 1
+    healthmultiplicator: 0.5
   equipment:
     weapon:
       probability: 0.2
-      dropchance: 1.
-      type: DIAMOND_SWORD
+      type: BOW
       enchantments:
-        - FIRE_ASPECT, 10
+        - ARROW_DAMAGE, 10
         - 0, 20
-  childchance: 0.5
