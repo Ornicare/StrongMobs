@@ -1,4 +1,4 @@
-package fr.ornicare.models.mobs;
+package fr.ornicare.models;
 
 import org.bukkit.enchantments.Enchantment;
 

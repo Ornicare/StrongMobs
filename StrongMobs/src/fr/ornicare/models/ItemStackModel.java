@@ -1,4 +1,4 @@
-package fr.ornicare.models.mobs;
+package fr.ornicare.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import fr.ornicare.util.MathHelper;
 
 /**
- * ItemStack wrapper
+ * ItemStack wrapper (equipement)
  * 
  * @author Ornicare
  *
@@ -20,6 +20,7 @@ public class ItemStackModel {
 	
 	private ItemStack asItem;
 	private double probability = 0;
+	private float dropChance = -1;
 	
 	private List<EnchantmentModel> enchantments = new ArrayList<EnchantmentModel>();
 	
@@ -69,6 +70,16 @@ public class ItemStackModel {
 
 	public void setProbability(double probability) {
 		this.probability = probability;
+	}
+
+
+	public float getDropChance() {
+		return dropChance;
+	}
+
+
+	public void setDropChance(float dropChance) {
+		this.dropChance = dropChance;
 	}
 
 

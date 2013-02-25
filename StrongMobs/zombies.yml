@@ -1,8 +1,18 @@
 superzombie:
   spawnweigh: 10
+  spawnmultiplicator: 0.9
+  health: 100
+  effects:
+    - SPEED, 10
+    - INCREASE_DAMAGE, 10
+  spawnondeath: #When a SuperZombie die, it has a probability of 100% to rebirth in 3 ZOMBIE with half-life
+    probability: 1.0
+    maxnumber: 3
+    healthmultiplicator: 0.5
   equipment:
     weapon:
       probability: 1.0
+      dropchance: 1.
       type: 293
       enchantments:
         - FIRE_ASPECT, 10
@@ -15,6 +25,7 @@ superzombie:
           - FIRE_ASPECT, 10
           - 0, 20
 simplezomb:
+  spawnmultiplicator: 0.9
   spawnweigh: 100
   equipment:
     weapon:
