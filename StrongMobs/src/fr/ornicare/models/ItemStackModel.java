@@ -5,7 +5,11 @@ import java.util.List;
 
 import net.minecraft.server.v1_4_R1.Enchantment;
 import net.minecraft.server.v1_4_R1.ItemStack;
+import net.minecraft.server.v1_4_R1.NBTTagCompound;
+import net.minecraft.server.v1_4_R1.NBTTagList;
+import net.minecraft.server.v1_4_R1.NBTTagString;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import fr.ornicare.util.MathHelper;
@@ -65,6 +69,7 @@ public class ItemStackModel {
 				if(ench!=null && ench.id == em.getEnchantment().getId() && (Math.random()<em.getProbability())) asItemClone.addEnchantment(ench, MathHelper.randomize(em.getEnchantmentLevel()));
 			}
 		}
+		asItemClone=addLore(asItemClone, "Ceci n'est pas un test");
 		return Math.random()<probability?asItemClone:null;
 	}
 
@@ -80,6 +85,27 @@ public class ItemStackModel {
 
 	public void setDropChance(float dropChance) {
 		this.dropChance = dropChance;
+	}
+	
+	
+	public ItemStack addLore(ItemStack item, String lore) {
+		//ItemStack itemStack = CraftItemStack.asNMSCopy(item);
+		
+		NBTTagCompound tag = item.tag;
+		if (tag == null) {
+			tag = new NBTTagCompound();
+			tag.setCompound("display", new NBTTagCompound());
+			tag.getCompound("display").set("Lore", new NBTTagList());
+			item.tag = tag;
+		}
+		
+		tag = item.tag.getCompound("display");
+		NBTTagList list = tag.getList("Lore");
+		list.add(new NBTTagString("", ChatColor.RESET + lore));
+		tag.set("Lore", list);
+		item.tag.setCompound("display", tag);
+		return item;
+		//return CraftItemStack.asCraftMirror(asItem);
 	}
 
 
