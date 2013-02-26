@@ -92,12 +92,11 @@ public class StrongMobLoader extends JavaPlugin{
 			creeper.setElectricChance(creeperConfig.getDouble(s+".electricchance"));
 			
 			// /!\ Specific to creeper : explosion type.
+			String[] explosionAvailableTypes = {"destroyblocs", "fire", "poisonous", "fireentity"};
 			if(creeperConfig.getList(s+".explosiontype")!=null) {
+				String expT;
 				for(Object effectObject : creeperConfig.getList(s+".explosiontype")) {
-					if(((String)effectObject).equals("destroyblocs")) creeper.addExplosionType("destroyblocs");
-					if(((String)effectObject).equals("fire")) creeper.addExplosionType("fire");
-					if(((String)effectObject).equals("poisonous")) creeper.addExplosionType("poisonous");
-					if(((String)effectObject).equals("fireentity")) creeper.addExplosionType("fireentity");
+					if(arrayContains(explosionAvailableTypes,(expT = ((String)effectObject)))) creeper.addExplosionType(expT);
 				}	
 			}
 			else {
@@ -114,8 +113,15 @@ public class StrongMobLoader extends JavaPlugin{
 		
 		//Create the handler.
 		this.getServer().getPluginManager().registerEvents(new CreeperHandler(), this);
-		
 		return true;
+	}
+	
+	
+
+	private boolean arrayContains(String[] explosionAvailableTypes, String string) {
+		boolean contain = false;
+		for(String s : explosionAvailableTypes) contain = !contain?s.equals(string):true;
+		return contain;
 	}
 
 	/**
