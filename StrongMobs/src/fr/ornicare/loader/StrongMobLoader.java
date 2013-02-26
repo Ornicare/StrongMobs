@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import cconsole.CConsole;
 import fr.ornicare.handlers.CreeperHandler;
 import fr.ornicare.handlers.SkeletonHandler;
 import fr.ornicare.handlers.ZombieHandler;
@@ -39,11 +38,6 @@ public class StrongMobLoader extends JavaPlugin{
 	 * Actions to perform on plugin load.
 	 */
 	public void onEnable() {
-		
-		///////////////////
-		CConsole.load();
-		
-		//////////////
 		
 		//If the config file doesn't exists, create it.
 		this.saveDefaultConfig();
