@@ -1,5 +1,7 @@
 package fr.ornicare.handlers;
 
+import java.util.List;
+
 import net.minecraft.server.v1_4_R1.EntityCreeper;
 
 import org.bukkit.Location;
@@ -82,35 +84,45 @@ public class CreeperHandler implements Listener {
 	public void onEntityExplodeEvent(final EntityExplodeEvent e) {
 		if (e.getEntity()!=null && (e==null?null:e.getEntityType()) == EntityType.CREEPER) {
 			Creeper creep = (Creeper)e.getEntity();
-			Location location = creep.getLocation();
-			boolean[] explosionTypes = ((CreeperModel)MobStorage.SPAWNONDEATH.get(creep.getUniqueId())).getExplosionTypes();
-			
-			//Physical
-			if(explosionTypes[0]) ((CraftWorld)creep.getWorld()).createExplosion(location.getX(), location.getY(), location.getZ(), creep.isPowered()?6:3, false);
-			
-			//fire
-			if(explosionTypes[1])((CraftWorld)creep.getWorld()).getHandle().createExplosion(null, location.getX(), location.getY(), location.getZ(), creep.isPowered()?6:3, true, false);
-			
-			//poisonous
-			if(explosionTypes[2]) {
-				int power = creep.isPowered()?1:0;
-				for(Entity ent : creep.getNearbyEntities(10*(power+1), 10*(power+1), 10*(power+1))) {
-					if(ent instanceof LivingEntity) {
-						LivingEntity enti = (LivingEntity) ent;
-						enti.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (creep.isPowered()?6:3)*100, power));
-					}
-				}
-			}
-			
-			//fireentity
-			if(explosionTypes[3]) {
-				int power = creep.isPowered()?1:0;
-				for(Entity ent : creep.getNearbyEntities(10*(power+1), 10*(power+1), 10*(power+1))) {
-					ent.setFireTicks((creep.isPowered()?6:3)*100);
-				}
+			List<String> explosionTypes = ((CreeperModel)MobStorage.SPAWNONDEATH.get(creep.getUniqueId())).getExplosionTypes();
+			for(String exp : explosionTypes) {
+				parseExplosionAndCreateIt(creep,exp,((CreeperModel)MobStorage.SPAWNONDEATH.get(creep.getUniqueId())).getExplosionRadiusMultiplier());
 			}
 			
 			e.setCancelled(true);
 		}
+	}
+
+	private void parseExplosionAndCreateIt(Creeper creep, String exp, double radiusmult) {
+		Location location = creep.getLocation();
+		radiusmult = (radiusmult==-1?1:radiusmult);
+		
+		//Physical
+		if(exp.equals("destroyblocs")) ((CraftWorld)creep.getWorld()).createExplosion(location.getX(), location.getY(), location.getZ(), (float) ((creep.isPowered()?6:3)*radiusmult), false);
+		
+		//fire
+		if(exp.equals("fire"))((CraftWorld)creep.getWorld()).getHandle().createExplosion(null, location.getX(), location.getY(), location.getZ(), (float) ((creep.isPowered()?6:3)*radiusmult), true, false);
+		
+		//poisonous
+		if(exp.equals("poisonous")) {
+			int power = creep.isPowered()?1:0;
+			double radius = 10*(power+1)*radiusmult;
+			for(Entity ent : creep.getNearbyEntities(radius,radius,radius)) {
+				if(ent instanceof LivingEntity) {
+					LivingEntity enti = (LivingEntity) ent;
+					enti.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (creep.isPowered()?6:3)*100, power));
+				}
+			}
+		}
+		
+		//fireentity
+		if(exp.equals("fireentity")) {
+			int power = creep.isPowered()?1:0;
+			double radius = 10*(power+1)*radiusmult;
+			for(Entity ent : creep.getNearbyEntities(radius,radius,radius)) {
+				ent.setFireTicks((creep.isPowered()?6:3)*100);
+			}
+		}
+		
 	}
 }

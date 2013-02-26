@@ -1,5 +1,8 @@
 package fr.ornicare.models.mobs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.ornicare.models.PotionEffectModel;
 import net.minecraft.server.v1_4_R1.EntityCreeper;
 import net.minecraft.server.v1_4_R1.MobEffect;
@@ -7,7 +10,8 @@ import net.minecraft.server.v1_4_R1.MobEffect;
 public class CreeperModel extends MobModel {
 
 	private double electricChance = 0.0;
-	private boolean[] explosionTypes = {false,false,false,false};
+	private List<String> explosionTypes = new ArrayList<String>();
+	private double explosionRadiusMultiplier = -1;
 	
 	public CreeperModel() {
 		super();
@@ -38,11 +42,19 @@ public class CreeperModel extends MobModel {
 		this.electricChance = electricChance;
 	}
 
-	public boolean[] getExplosionTypes() {
+	public List<String> getExplosionTypes() {
 		return explosionTypes;
 	}
 
-	public void setExplosionTypes(boolean[] explosionTypes) {
-		this.explosionTypes = explosionTypes;
+	public void addExplosionType(String explosionType) {
+		this.explosionTypes.add(explosionType);
+	}
+
+	public double getExplosionRadiusMultiplier() {
+		return explosionRadiusMultiplier;
+	}
+
+	public void setExplosionRadiusMultiplier(double explosionradiusmultiplier) {
+		this.explosionRadiusMultiplier = explosionradiusmultiplier;
 	}
 }

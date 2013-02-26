@@ -92,20 +92,21 @@ public class StrongMobLoader extends JavaPlugin{
 			creeper.setElectricChance(creeperConfig.getDouble(s+".electricchance"));
 			
 			// /!\ Specific to creeper : explosion type.
-			boolean[] explosionsType = {false,false,false,false};
 			if(creeperConfig.getList(s+".explosiontype")!=null) {
 				for(Object effectObject : creeperConfig.getList(s+".explosiontype")) {
-					if(((String)effectObject).equals("destroyblocs")) explosionsType[0] = true;
-					if(((String)effectObject).equals("fire")) explosionsType[1] = true;
-					if(((String)effectObject).equals("poisonous")) explosionsType[2] = true;
-					if(((String)effectObject).equals("fireentity")) explosionsType[3] = true;
+					if(((String)effectObject).equals("destroyblocs")) creeper.addExplosionType("destroyblocs");
+					if(((String)effectObject).equals("fire")) creeper.addExplosionType("fire");
+					if(((String)effectObject).equals("poisonous")) creeper.addExplosionType("poisonous");
+					if(((String)effectObject).equals("fireentity")) creeper.addExplosionType("fireentity");
 				}	
 			}
 			else {
 				//default creeper explosion
-				explosionsType[0] = true;
+				creeper.addExplosionType("destroyblocs");
 			}
-			creeper.setExplosionTypes(explosionsType);
+			
+			// /!\ Specific to creeper : explosion radius multiplier.
+			if(creeperConfig.getString(s+".explosionradiusmultiplier")!=null) creeper.setExplosionRadiusMultiplier(creeperConfig.getDouble(s+".explosionradiusmultiplier"));
 			
 			//Store the new creeper !
 			MobStorage.CREEPERS.push(creeperConfig.getInt(s+".spawnweigh"), creeper);	

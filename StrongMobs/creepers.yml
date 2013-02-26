@@ -10,8 +10,11 @@ firecreeper:
     - fireentity
   effects:
     - FIRE_RESISTANCE, 1
+  explosionradiusmultiplier: 2.0
 poisonouscreeper:
   spawnweigh: 100
   electricchance: 0.01
   explosiontype:
     - poisonous
+  effects:
+    - WEAKNESS, 1
