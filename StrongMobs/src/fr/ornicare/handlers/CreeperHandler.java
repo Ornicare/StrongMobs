@@ -124,12 +124,15 @@ public class CreeperHandler implements Listener {
 			}
 			
 			e.setCancelled(true);
+			
 		}
 	}
 
 	private void parseExplosionAndCreateIt(Creeper creep, String exp, double radiusmult) {
 		Location location = creep.getLocation();
 		radiusmult = (radiusmult==-1?1:radiusmult);
+		int power = creep.isPowered()?1:0;
+		double radius = 6*(power+1)*radiusmult;
 		
 		//Physical
 		if(exp.equals("destroyblocs")) ((CraftWorld)creep.getWorld()).createExplosion(location.getX(), location.getY(), location.getZ(), (float) ((creep.isPowered()?6:3)*radiusmult), false);
@@ -139,8 +142,6 @@ public class CreeperHandler implements Listener {
 		
 		//poisonous
 		if(exp.equals("poisonous")) {
-			int power = creep.isPowered()?1:0;
-			double radius = 10*(power+1)*radiusmult;
 			for(Entity ent : creep.getNearbyEntities(radius,radius,radius)) {
 				if(ent instanceof LivingEntity) {
 					LivingEntity enti = (LivingEntity) ent;
@@ -148,19 +149,16 @@ public class CreeperHandler implements Listener {
 				}
 			}
 			//Visual effect
-			for(int i = 0;i<10;i++) creep.getWorld().playEffect(creep.getLocation().add(new Vector(Math.random(), Math.random(), Math.random())), Effect.POTION_BREAK, 20, 50);
+			for(int i = 0;i<10;i++) creep.getWorld().playEffect(creep.getLocation().add(new Vector(Math.random(), Math.random(), Math.random()).normalize()), Effect.POTION_BREAK, 20, 50);
 		}
 		
 		//fireentity
 		if(exp.equals("fireentity")) {
-			int power = creep.isPowered()?1:0;
-			double radius = 10*(power+1)*radiusmult;
 			for(Entity ent : creep.getNearbyEntities(radius,radius,radius)) {
 				ent.setFireTicks((creep.isPowered()?6:3)*100);
 			}
 			//Visual effect (http://wiki.sk89q.com/wiki/CraftBook/MC0210       http://www.lb-stuff.com/Minecraft/PotionDataValues1.9pre3.txt)
-			for(int i = 0;i<10;i++) creep.getWorld().playEffect(creep.getLocation().add(new Vector(Math.random(), Math.random(), Math.random())), Effect.POTION_BREAK, 19, 50);
+			for(int i = 0;i<10;i++) creep.getWorld().playEffect(creep.getLocation().add(new Vector(Math.random(), Math.random(), Math.random()).normalize()), Effect.POTION_BREAK, 19, 50);
 		}
-		
 	}
 }
