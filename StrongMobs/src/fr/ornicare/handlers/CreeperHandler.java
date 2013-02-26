@@ -1,13 +1,13 @@
 package fr.ornicare.handlers;
 
-import net.minecraft.server.v1_4_R1.EntitySkeleton;
+import net.minecraft.server.v1_4_R1.EntityCreeper;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_4_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftSkeleton;
+import org.bukkit.craftbukkit.v1_4_R1.entity.CraftCreeper;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,42 +15,42 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import fr.ornicare.models.mobs.SkeletonModel;
+import fr.ornicare.models.mobs.CreeperModel;
 import fr.ornicare.storage.MobStorage;
 
 
 
-public class SkeletonHandler implements Listener {
+public class CreeperHandler implements Listener {
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(final CreatureSpawnEvent e) throws Exception {
-		if (e.getEntityType() == EntityType.SKELETON) {
+		if (e.getEntityType() == EntityType.CREEPER) {
 
 
-            Skeleton skel = (Skeleton)e.getEntity();
-	        CraftSkeleton skelC = (CraftSkeleton)skel;
-	        EntitySkeleton skelMC = skelC.getHandle();
+            Creeper creep = (Creeper)e.getEntity();
+	        CraftCreeper creepC = (CraftCreeper)creep;
+	        EntityCreeper creepMC = creepC.getHandle();
      
             //get the a random zombie model
-	        SkeletonModel skelMod = (SkeletonModel)MobStorage.SKELETONS.getRandomMob();
-	        skelMC = skelMod.getMob(skelMC); 
+	        CreeperModel creepMod = (CreeperModel)MobStorage.CREEPERS.getRandomMob();
+	        creepMC = creepMod.getMob(creepMC); 
 	        
 	        //Use the spawnmultiplicator
-	        if(Math.random() < skelMod.getSpawnmultiplicator()) {
-	            spawnAtTheSamePlace(skel);
+	        if(Math.random() < creepMod.getSpawnmultiplicator()) {
+	            spawnAtTheSamePlace(creep);
 	        }
 	        
 	        //store spawnondeath
-			MobStorage.SPAWNONDEATH.put(skel.getUniqueId(), skelMod.getSpawnOnDeath());
+			MobStorage.SPAWNONDEATH.put(creep.getUniqueId(), creepMod.getSpawnOnDeath());
 		}
 	}
 	
-	private EntitySkeleton spawnAtTheSamePlace(Skeleton skel) {
-		Location location = skel.getLocation();
+	private EntityCreeper spawnAtTheSamePlace(Creeper creep) {
+		Location location = creep.getLocation();
         World world = location.getWorld();
         net.minecraft.server.v1_4_R1.World mcWorld = ((CraftWorld) world).getHandle();
 
-        EntitySkeleton childSkem = new EntitySkeleton(mcWorld);
+        EntityCreeper childSkem = new EntityCreeper(mcWorld);
         childSkem.setPosition(location.getX(), location.getY(), location.getZ());
     	mcWorld.addEntity(childSkem, SpawnReason.CUSTOM); 
     	return childSkem;
@@ -58,16 +58,16 @@ public class SkeletonHandler implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(final EntityDeathEvent e) {
-		if (e.getEntityType() == EntityType.SKELETON) {
-			Skeleton skel = (Skeleton)e.getEntity();
+		if (e.getEntityType() == EntityType.CREEPER) {
+			Creeper creep = (Creeper)e.getEntity();
 	        
-	        if(MobStorage.SPAWNONDEATH.containsKey(skel.getUniqueId())) {
+	        if(MobStorage.SPAWNONDEATH.containsKey(creep.getUniqueId())) {
 	        	//use spawn on death
-		        double[] spawnondeath = MobStorage.SPAWNONDEATH.get(skel.getUniqueId());
+		        double[] spawnondeath = MobStorage.SPAWNONDEATH.get(creep.getUniqueId());
 		        if(Math.random()< spawnondeath[0]) {
 		        	for(int i = 0; i< (int)(spawnondeath[1])*Math.random()+1;i++) {
-		        		EntitySkeleton childSkel = spawnAtTheSamePlace(skel);
-		        		childSkel.setHealth((int)(childSkel.getHealth()*spawnondeath[0]));
+		        		EntityCreeper childCreep = spawnAtTheSamePlace(creep);
+		        		childCreep.setHealth((int)(childCreep.getHealth()*spawnondeath[0]));
 		        	}
 		        }
 	        }

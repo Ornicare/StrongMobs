@@ -8,12 +8,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import cconsole.CConsole;
+import fr.ornicare.handlers.CreeperHandler;
 import fr.ornicare.handlers.SkeletonHandler;
 import fr.ornicare.handlers.ZombieHandler;
-import fr.ornicare.models.MobModel;
 import fr.ornicare.models.PotionEffectModel;
-import fr.ornicare.models.SkeletonModel;
-import fr.ornicare.models.ZombieModel;
+import fr.ornicare.models.mobs.CreeperModel;
+import fr.ornicare.models.mobs.MobModel;
+import fr.ornicare.models.mobs.SkeletonModel;
+import fr.ornicare.models.mobs.ZombieModel;
 import fr.ornicare.storage.MobStorage;
 import fr.ornicare.yaml.ConfigAccessor;
 
@@ -28,6 +30,9 @@ public class StrongMobLoader extends JavaPlugin{
 	public static Logger LOGGER;
 	public static FileConfiguration CONFIG;
 	
+	/**
+	 * Semi paths
+	 */
 	private String[] idToPath = {"weapon","armor.boots","armor.leggings","armor.chestplate","armor.helmet"};
 
 	/**
@@ -55,9 +60,6 @@ public class StrongMobLoader extends JavaPlugin{
         List<String> rules = CONFIG.getStringList("Activated");
         for (String s : rules) {
         	 switch(s) {
-        	 	case "player":
-        	 		LOGGER.log(Level.INFO,"Player modifier loaded !");
-        	 		break;
         	 	case "zombie":
         			loadZombies();
         			LOGGER.log(Level.INFO,"Zombie modifier loaded !");
@@ -67,6 +69,7 @@ public class StrongMobLoader extends JavaPlugin{
         	        LOGGER.log(Level.INFO,"Skeleton modifier loaded !");
         	 		break;
         	 	case "creeper":
+        	 		loadCreepers();
         	        LOGGER.log(Level.INFO,"Creeper modifier loaded !");
         	 		break;
         	 }
@@ -74,6 +77,34 @@ public class StrongMobLoader extends JavaPlugin{
 		
 	}
 	
+	/**
+	 * Load creepers models
+	 */
+	private void loadCreepers() {
+		//Create the config file manager.
+		ConfigAccessor creeperConfigFile = new ConfigAccessor(this, "creepers.yml");
+		
+		//If the config file doesn't exists, create it.
+		creeperConfigFile.saveDefaultConfig();
+		
+		//get it.
+		FileConfiguration creeperConfig = creeperConfigFile.getConfig();
+		
+		//get the list of creepers and load it
+		for(String s : creeperConfigFile.getMobList()) {
+			CreeperModel creeper = (CreeperModel) genericMobLoader(new CreeperModel(), s, creeperConfig);
+
+			// /!\ Specific to creeper : probability to be electric.
+			creeper.setElectricChance(creeperConfig.getDouble(s+".electricchance"));
+			
+			//Store the new creeper !
+			MobStorage.CREEPERS.push(creeperConfig.getInt(s+".spawnweigh"), creeper);	
+		}
+		
+		//Create the handler.
+		this.getServer().getPluginManager().registerEvents(new CreeperHandler(), this);
+	}
+
 	/**
 	 * Load skeletons models
 	 */
@@ -87,11 +118,11 @@ public class StrongMobLoader extends JavaPlugin{
 		//get it.
 		FileConfiguration skeletonConfig = skeletonConfigFile.getConfig();
 		
-		//get the list of zombies and load it
+		//get the list of skeleton and load it
 		for(String s : skeletonConfigFile.getMobList()) {
 			SkeletonModel skeleton = (SkeletonModel) genericMobLoader(new SkeletonModel(), s, skeletonConfig);
 	
-			//Store the new zombie !
+			//Store the new skeleton !
 			MobStorage.SKELETONS.push(skeletonConfig.getInt(s+".spawnweigh"), skeleton);	
 		}
 		
@@ -117,7 +148,7 @@ public class StrongMobLoader extends JavaPlugin{
 		for(String s : zombieConfigFile.getMobList()) {
 			ZombieModel zombie = (ZombieModel) genericMobLoader(new ZombieModel(), s, zombieConfig);
 
-			// /!\ Specific to zombie : probanility to get a mini zombie.
+			// /!\ Specific to zombie : probability to get a mini zombie.
 			zombie.setChildChance(zombieConfig.getDouble(s+".childchance"));
 			
 			//Store the new zombie !
@@ -156,7 +187,16 @@ public class StrongMobLoader extends JavaPlugin{
 				
 				if(effectArray.length>0) {
 					String eLevel = effectArray.length>1?effectArray[1].trim():"1";
+					String eProba = effectArray.length>2?effectArray[2].trim():"1.0";
 					int effectLevel;
+					double eProbability;
+					
+					try {
+						eProbability = Double.parseDouble(eProba);
+					}
+					catch(Exception e) {
+						eProbability = 0;
+					}
 					
 					try {
 						effectLevel = Integer.parseInt(eLevel);
@@ -168,10 +208,10 @@ public class StrongMobLoader extends JavaPlugin{
 					try {
 						int effectId = Integer.parseInt(effectArray[0].trim());
 						
-						mmodel.addPotionEffect(new PotionEffectModel(effectId, effectLevel));
+						mmodel.addPotionEffect(new PotionEffectModel(effectId, effectLevel, eProbability));
 					}
 					catch(Exception e) {
-						mmodel.addPotionEffect(new PotionEffectModel(effectArray[0].trim(), effectLevel));
+						mmodel.addPotionEffect(new PotionEffectModel(effectArray[0].trim(), effectLevel, eProbability));
 					}
 				}
 
@@ -216,7 +256,16 @@ public class StrongMobLoader extends JavaPlugin{
 				
 				if(enchantmentArray.length>0) {
 					String eLevel = enchantmentArray.length>1?enchantmentArray[1].trim():"1";
+					String eProba = enchantmentArray.length>2?enchantmentArray[2].trim():"1.0";
 					int enchantmentLevel;
+					double eProbability;
+					
+					try {
+						eProbability = Double.parseDouble(eProba);
+					}
+					catch(Exception e) {
+						eProbability = 0;
+					}
 					
 					try {
 						enchantmentLevel = Integer.parseInt(eLevel);
@@ -229,10 +278,10 @@ public class StrongMobLoader extends JavaPlugin{
 					try {
 						int enchantmentId = Integer.parseInt(enchantmentArray[0].trim());
 						
-						mmodel.addItemEnchantments(id, enchantmentId, enchantmentLevel);
+						mmodel.addItemEnchantments(id, enchantmentId, enchantmentLevel, eProbability);
 					}
 					catch(Exception e) {
-						mmodel.addItemEnchantments(id, enchantmentArray[0].trim(), enchantmentLevel);
+						mmodel.addItemEnchantments(id, enchantmentArray[0].trim(), enchantmentLevel, eProbability);
 					}
 				}
 

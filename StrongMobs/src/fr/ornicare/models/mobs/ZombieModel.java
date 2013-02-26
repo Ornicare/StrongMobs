@@ -1,5 +1,6 @@
-package fr.ornicare.models;
+package fr.ornicare.models.mobs;
 
+import fr.ornicare.models.PotionEffectModel;
 import net.minecraft.server.v1_4_R1.EntityZombie;
 import net.minecraft.server.v1_4_R1.MobEffect;
 
@@ -15,7 +16,7 @@ public class ZombieModel extends MobModel {
 	}
 	
 	public EntityZombie getMob(EntityZombie zombie) {
-		//Set the weapon
+		//Set the equipment
 		zombie = (EntityZombie) super.getMob(zombie);
 		
 		//set health
@@ -23,7 +24,7 @@ public class ZombieModel extends MobModel {
 		
 		//Apply potion effect
 		for(PotionEffectModel pE : getPotionEffects()) {
-			zombie.addEffect(new MobEffect(pE.getEnchantment().getId(),2000000000,pE.getEnchantmentLevel()));
+			if(pE.getPotionEffectLevel()>0 && (Math.random()<pE.getProbability())) zombie.addEffect(new MobEffect(pE.getPotionEffect().getId(),2000000000,pE.getPotionEffectLevel()-1));
 		}
 		
 		//It is a child ?

@@ -1,7 +1,11 @@
-package fr.ornicare.models;
+package fr.ornicare.models.mobs;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.ornicare.models.EnchantmentModel;
+import fr.ornicare.models.ItemStackModel;
+import fr.ornicare.models.PotionEffectModel;
 
 import net.minecraft.server.v1_4_R1.EntityLiving;
 
@@ -126,9 +130,10 @@ public abstract class MobModel {
 	 * 
 	 * @param name enchantment name
 	 * @param power enchantment level
+	 * @param eProbability 
 	 */
-	public void addItemEnchantments(int id,String name, int power) {
-		if(id<5 && id >= 0) this.items[id].addEnchantment(new EnchantmentModel(name,power));
+	public void addItemEnchantments(int id,String name, int power, double eProbability) {
+		if(id<5 && id >= 0) this.items[id].addEnchantment(new EnchantmentModel(name,power, eProbability));
 	}
 	
 	/**
@@ -136,9 +141,10 @@ public abstract class MobModel {
 	 * 
 	 * @param id enchantment id
 	 * @param power enchantment level
+	 * @param eProbability 
 	 */
-	public void addItemEnchantments(int id, int eid, int power) {
-		if(id<5 && id >= 0) this.items[id].addEnchantment(new EnchantmentModel(eid,power));
+	public void addItemEnchantments(int id, int eid, int power, double eProbability) {
+		if(id<5 && id >= 0) this.items[id].addEnchantment(new EnchantmentModel(eid,power,eProbability));
 	}
 
 
@@ -146,7 +152,7 @@ public abstract class MobModel {
 		//Create items
 		for(int i =0;i<5;i++) {
 			entity.setEquipment(i,items[i].getAsItem());
-			entity.dropChances[i] = items[i].getDropChance();
+			if(items[i].getDropChance()!=-1) entity.dropChances[i] = items[i].getDropChance();
 		}
 		
 		return entity;

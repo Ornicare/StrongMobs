@@ -1,40 +1,78 @@
-superzombie:
+axeskeleton:
   spawnweigh: 10
-  spawnmultiplicator: 0.1
-  health: 100
+  health: 40
   effects:
-    - SPEED, 10
-    - INCREASE_DAMAGE, 10
-  spawnondeath: #When a SuperZombie die, it has a probability of 100% to rebirth in 3 ZOMBIE with half-life
-    probability: 1.0
-    maxnumber: 3
-    healthmultiplicator: 0.5
+    - JUMP, 2
+    - SPEED, 3
+    - FIRE_RESISTANCE, 1, 0.2
   equipment:
     weapon:
       probability: 1.0
-      dropchance: 1.
-      type: 293
+      type: IRON_AXE
       enchantments:
-        - FIRE_ASPECT, 10
         - DAMAGE_ALL, 5
+        - KNOCKBACK, 2
+        - FIRE_ASPECT, 2, 0.3
     armor:
+      boots:
+        probability: 0.1
+        type: CHAINMAIL_BOOTS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      leggings:
+        probability: 0.1
+        type: CHAINMAIL_LEGGINGS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
       chestplate:
         probability: 1.0
-        type: DIAMOND_CHESTPLATE
+        type: IRON_CHESTPLATE
         enchantments:
-          - FIRE_ASPECT, 10
-          - 0, 20
-simplezomb:
-  spawnmultiplicator: 0.0
-  spawnweigh: 100
-  spawnondeath: #When a SuperZombie die, it has a probability of 100% to rebirth in 3 ZOMBIE with half-life
-    probability: 1.0
-    maxnumber: 1
-    healthmultiplicator: 0.5
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      helmet:
+        probability: 0.1
+        type: CHAINMAIL_HELMET
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+normalskeleton:
+  spawnweigh: 90
+  effects:
+    - JUMP, 2
+    - FIRE_RESISTANCE, 1, 0.2
   equipment:
     weapon:
-      probability: 0.2
+      probability: 1.0
       type: BOW
       enchantments:
-        - ARROW_DAMAGE, 10
-        - 0, 20
+        - ARROW_DAMAGE, 5, 0.7
+        - ARROW_KNOCKBACK, 2, 0.4
+        - ARROW_FIRE, 2, 0.2
+    armor:
+      boots:
+        probability: 0.1
+        type: CHAINMAIL_BOOTS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      leggings:
+        probability: 0.1
+        type: CHAINMAIL_LEGGINGS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      chestplate:
+        probability: 0.4
+        type: CHAINMAIL_CHESTPLATE
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      helmet:
+        probability: 0.1
+        type: CHAINMAIL_HELMET
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3

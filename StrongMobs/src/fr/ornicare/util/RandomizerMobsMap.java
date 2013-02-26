@@ -3,7 +3,7 @@ package fr.ornicare.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.ornicare.models.MobModel;
+import fr.ornicare.models.mobs.MobModel;
 
 /**
  * Wrapper for a  Map<weigh,MobModel>

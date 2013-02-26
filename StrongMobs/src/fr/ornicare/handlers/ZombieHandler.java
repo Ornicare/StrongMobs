@@ -15,7 +15,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import fr.ornicare.models.ZombieModel;
+import fr.ornicare.models.mobs.ZombieModel;
 import fr.ornicare.storage.MobStorage;
 
 

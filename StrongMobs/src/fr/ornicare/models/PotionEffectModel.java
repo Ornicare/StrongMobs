@@ -12,12 +12,13 @@ import org.bukkit.potion.PotionEffectType;
 public class PotionEffectModel {
 	private int potionEffectLevel = 0;
 	private PotionEffectType potionEffect;
+	private double probability = 1.0;
 	
-	public int getEnchantmentLevel() {
+	public int getPotionEffectLevel() {
 		return potionEffectLevel;
 	}
 
-	public PotionEffectType getEnchantment() {
+	public PotionEffectType getPotionEffect() {
 		return potionEffect;
 	}
 	
@@ -27,9 +28,10 @@ public class PotionEffectModel {
 	 * @param pName
 	 * @param pLevel
 	 */
-	public PotionEffectModel(String pName, int pLevel) {
+	public PotionEffectModel(String pName, int pLevel, double eProbability) {
 		this.potionEffectLevel = pLevel>0?pLevel:0;
 		this.potionEffect = PotionEffectType.getByName(pName);
+		this.probability = eProbability;
 	}
 	
 	/**
@@ -37,10 +39,16 @@ public class PotionEffectModel {
 	 * 
 	 * @param pId
 	 * @param pLevel
+	 * @param eProbability 
 	 */
-	public PotionEffectModel(int pId, int pLevel) {
+	public PotionEffectModel(int pId, int pLevel, double eProbability) {
 		this.potionEffectLevel = pLevel>0?pLevel:0;
 		this.potionEffect = PotionEffectType.getById(pId);
+		this.probability = eProbability;
+	}
+
+	public double getProbability() {
+		return probability;
 	}
 
 }

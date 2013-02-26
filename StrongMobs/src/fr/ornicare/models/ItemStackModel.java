@@ -62,7 +62,7 @@ public class ItemStackModel {
 		ItemStack asItemClone = asItem.cloneItemStack();
 		for(EnchantmentModel em : this.enchantments) {
 			for(Enchantment ench : Enchantment.byId) {
-				if(ench!=null && ench.id == em.getEnchantment().getId()) asItemClone.addEnchantment(ench, MathHelper.randomize(em.getEnchantmentLevel()));
+				if(ench!=null && ench.id == em.getEnchantment().getId() && (Math.random()<em.getProbability())) asItemClone.addEnchantment(ench, MathHelper.randomize(em.getEnchantmentLevel()));
 			}
 		}
 		return Math.random()<probability?asItemClone:null;

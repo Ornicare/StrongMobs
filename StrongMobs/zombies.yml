@@ -1,38 +1,113 @@
 superzombie:
-  spawnweigh: 10
-  spawnmultiplicator: 0.9
+  spawnmultiplicator: 0.6
   health: 100
-  effects:
-    - SPEED, 10
-    - INCREASE_DAMAGE, 10
-  spawnondeath: #When a SuperZombie die, it has a probability of 100% to rebirth in 3 ZOMBIE with half-life
-    probability: 1.0
+  spawnweigh: 1
+  childchance: 0.05
+  spawnondeath:
+    probability: 0.01
     maxnumber: 3
     healthmultiplicator: 0.5
+  effects:
+    - SPEED, 4
+    - JUMP, 2
+    - FIRE_RESISTANCE, 1
   equipment:
     weapon:
       probability: 1.0
-      dropchance: 1.
-      type: 293
-      enchantments:
-        - FIRE_ASPECT, 10
-        - DAMAGE_ALL, 5
-    armor:
-      chestplate:
-        probability: 1.0
-        type: DIAMOND_CHESTPLATE
-        enchantments:
-          - FIRE_ASPECT, 10
-          - 0, 20
-simplezomb:
-  spawnmultiplicator: 0.9
-  spawnweigh: 100
-  equipment:
-    weapon:
-      probability: 0.2
-      dropchance: 1.
+      dropchance: 0.05
       type: DIAMOND_SWORD
       enchantments:
-        - FIRE_ASPECT, 10
-        - 0, 20
-  childchance: 0.5
+        - DAMAGE_ALL, 6
+        - FIRE_ASPECT, 3
+        - KNOCKBACK, 3
+    armor:
+      boots:
+        probability: 1.0
+        dropchance: 0.05
+        type: DIAMOND_BOOTS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 5
+          - PROTECTION_EXPLOSIONS, 5
+          - PROTECTION_FALL, 5
+          - PROTECTION_FIRE, 5
+          - PROTECTION_PROJECTILE, 5
+          - DURABILITY, 5
+          - THORNS, 3
+      leggings:
+        probability: 1.0
+        dropchance: 0.05
+        type: DIAMOND_LEGGINGS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 5
+          - PROTECTION_EXPLOSIONS, 5
+          - PROTECTION_FIRE, 5
+          - PROTECTION_PROJECTILE, 5
+          - DURABILITY, 5
+          - THORNS, 3
+      chestplate:
+        probability: 1.0
+        dropchance: 0.05
+        type: DIAMOND_CHESTPLATE
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 5
+          - PROTECTION_EXPLOSIONS, 5
+          - PROTECTION_FIRE, 5
+          - PROTECTION_PROJECTILE, 5
+          - DURABILITY, 5
+          - THORNS, 3
+      helmet:
+        probability: 1.0
+        dropchance: 0.01
+        type: DIAMOND_HELMET
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 5
+          - PROTECTION_EXPLOSIONS, 5
+          - PROTECTION_FIRE, 5
+          - PROTECTION_PROJECTILE, 5
+          - DURABILITY, 5
+          - THORNS, 3
+normalzombie:
+  spawnmultiplicator: 0.6
+  spawnweigh: 99
+  childchance: 0.05
+  spawnondeath:
+    probability: 0.01
+    maxnumber: 3
+    healthmultiplicator: 0.5
+  effects:
+    - SPEED, 2
+    - JUMP, 2
+    - FIRE_RESISTANCE, 1, 0.2
+  equipment:
+    weapon:
+      probability: 0.5
+      type: IRON_SWORD
+      enchantments:
+        - DAMAGE_ALL, 5, 0.5
+        - FIRE_ASPECT, 2, 0.2
+        - KNOCKBACK, 2, 0.4
+    armor:
+      boots:
+        probability: 0.1
+        type: IRON_BOOTS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      leggings:
+        probability: 0.1
+        type: IRON_LEGGINGS
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      chestplate:
+        probability: 0.4
+        type: IRON_CHESTPLATE
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
+      helmet:
+        probability: 0.1
+        type: IRON_HELMET
+        enchantments:
+          - PROTECTION_ENVIRONMENTAL, 4, 0.5
+          - THORNS, 3, 0.3
