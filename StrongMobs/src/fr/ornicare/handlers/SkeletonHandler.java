@@ -41,7 +41,7 @@ public class SkeletonHandler implements Listener {
 	        }
 	        
 	        //store spawnondeath
-			MobStorage.SPAWNONDEATH.put(skel.getUniqueId(), skelMod.getSpawnOnDeath());
+			MobStorage.SPAWNONDEATH.put(skel.getUniqueId(), skelMod);
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class SkeletonHandler implements Listener {
 	        
 	        if(MobStorage.SPAWNONDEATH.containsKey(skel.getUniqueId())) {
 	        	//use spawn on death
-		        double[] spawnondeath = MobStorage.SPAWNONDEATH.get(skel.getUniqueId());
+		        double[] spawnondeath = MobStorage.SPAWNONDEATH.get(skel.getUniqueId()).getSpawnOnDeath();
 		        if(Math.random()< spawnondeath[0]) {
 		        	for(int i = 0; i< (int)(spawnondeath[1])*Math.random()+1;i++) {
 		        		EntitySkeleton childSkel = spawnAtTheSamePlace(skel);

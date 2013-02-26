@@ -1,3 +1,17 @@
 normalcreeper:
   spawnweigh: 100
   electricchance: 0.01
+  explosiontype:
+    - destroyblocs
+firecreeper:
+  spawnweigh: 100
+  electricchance: 0.01
+  explosiontype:
+    - fireentity
+  effects:
+    - FIRE_RESISTANCE, 1
+poisonouscreeper:
+  spawnweigh: 100
+  electricchance: 0.01
+  explosiontype:
+    - poisonous

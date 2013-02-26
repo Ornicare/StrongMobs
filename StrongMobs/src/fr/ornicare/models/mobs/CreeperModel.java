@@ -7,6 +7,7 @@ import net.minecraft.server.v1_4_R1.MobEffect;
 public class CreeperModel extends MobModel {
 
 	private double electricChance = 0.0;
+	private boolean[] explosionTypes = {false,false,false,false};
 	
 	public CreeperModel() {
 		super();
@@ -35,5 +36,13 @@ public class CreeperModel extends MobModel {
 
 	public void setElectricChance(double electricChance) {
 		this.electricChance = electricChance;
+	}
+
+	public boolean[] getExplosionTypes() {
+		return explosionTypes;
+	}
+
+	public void setExplosionTypes(boolean[] explosionTypes) {
+		this.explosionTypes = explosionTypes;
 	}
 }

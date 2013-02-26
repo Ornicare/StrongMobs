@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import fr.ornicare.models.mobs.MobModel;
 import fr.ornicare.util.RandomizerMobsMap;
 
 public abstract class MobStorage {
@@ -18,5 +19,5 @@ public abstract class MobStorage {
 	public static RandomizerMobsMap ZOMBIES = new RandomizerMobsMap();
 	
 	//Mob UUID/spawn on death correlation
-	public static Map<UUID,double[]> SPAWNONDEATH = new HashMap<UUID,double[]>();
+	public static Map<UUID,MobModel> SPAWNONDEATH = new HashMap<UUID,MobModel>();
 }

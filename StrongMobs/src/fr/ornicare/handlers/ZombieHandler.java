@@ -41,7 +41,7 @@ public class ZombieHandler implements Listener {
 	        }
 	        
 	        //store spawnondeath
-			MobStorage.SPAWNONDEATH.put(zomb.getUniqueId(), zombieMod.getSpawnOnDeath());
+			MobStorage.SPAWNONDEATH.put(zomb.getUniqueId(), zombieMod);
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class ZombieHandler implements Listener {
 	        
 	        if(MobStorage.SPAWNONDEATH.containsKey(zomb.getUniqueId())) {
 	        	//use spawn on death
-		        double[] spawnondeath = MobStorage.SPAWNONDEATH.get(zomb.getUniqueId());
+		        double[] spawnondeath = MobStorage.SPAWNONDEATH.get(zomb.getUniqueId()).getSpawnOnDeath();
 		        if(Math.random()< spawnondeath[0]) {
 		        	for(int i = 0; i< (int)(spawnondeath[1])*Math.random()+1;i++) {
 		        		EntityZombie childZombie = spawnAtTheSamePlace(zomb);

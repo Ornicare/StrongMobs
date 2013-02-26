@@ -55,16 +55,13 @@ public class StrongMobLoader extends JavaPlugin{
         for (String s : rules) {
         	 switch(s) {
         	 	case "zombie":
-        			loadZombies();
-        			LOGGER.log(Level.INFO,"Zombie modifier loaded !");
+        	 		if(loadZombies()) LOGGER.log(Level.INFO,"Zombie modifier loaded !");
         	 		break;
         	 	case "skeleton":
-        	 		loadSkeletons();
-        	        LOGGER.log(Level.INFO,"Skeleton modifier loaded !");
+        	 		if(loadSkeletons()) LOGGER.log(Level.INFO,"Skeleton modifier loaded !");
         	 		break;
         	 	case "creeper":
-        	 		loadCreepers();
-        	        LOGGER.log(Level.INFO,"Creeper modifier loaded !");
+        	 		if(loadCreepers()) LOGGER.log(Level.INFO,"Creeper modifier loaded !");
         	 		break;
         	 }
         }
@@ -74,7 +71,7 @@ public class StrongMobLoader extends JavaPlugin{
 	/**
 	 * Load creepers models
 	 */
-	private void loadCreepers() {
+	private boolean loadCreepers() {
 		//Create the config file manager.
 		ConfigAccessor creeperConfigFile = new ConfigAccessor(this, "creepers.yml");
 		
@@ -84,6 +81,9 @@ public class StrongMobLoader extends JavaPlugin{
 		//get it.
 		FileConfiguration creeperConfig = creeperConfigFile.getConfig();
 		
+		//if the list if empty don't load
+		if(creeperConfigFile.getMobList().isEmpty()) return false;
+		
 		//get the list of creepers and load it
 		for(String s : creeperConfigFile.getMobList()) {
 			CreeperModel creeper = (CreeperModel) genericMobLoader(new CreeperModel(), s, creeperConfig);
@@ -91,18 +91,36 @@ public class StrongMobLoader extends JavaPlugin{
 			// /!\ Specific to creeper : probability to be electric.
 			creeper.setElectricChance(creeperConfig.getDouble(s+".electricchance"));
 			
+			// /!\ Specific to creeper : explosion type.
+			boolean[] explosionsType = {false,false,false,false};
+			if(creeperConfig.getList(s+".explosiontype")!=null) {
+				for(Object effectObject : creeperConfig.getList(s+".explosiontype")) {
+					if(((String)effectObject).equals("destroyblocs")) explosionsType[0] = true;
+					if(((String)effectObject).equals("fire")) explosionsType[1] = true;
+					if(((String)effectObject).equals("poisonous")) explosionsType[2] = true;
+					if(((String)effectObject).equals("fireentity")) explosionsType[3] = true;
+				}	
+			}
+			else {
+				//default creeper explosion
+				explosionsType[0] = true;
+			}
+			creeper.setExplosionTypes(explosionsType);
+			
 			//Store the new creeper !
 			MobStorage.CREEPERS.push(creeperConfig.getInt(s+".spawnweigh"), creeper);	
 		}
 		
 		//Create the handler.
 		this.getServer().getPluginManager().registerEvents(new CreeperHandler(), this);
+		
+		return true;
 	}
 
 	/**
 	 * Load skeletons models
 	 */
-	private void loadSkeletons() {
+	private boolean loadSkeletons() {
 		//Create the config file manager.
 		ConfigAccessor skeletonConfigFile = new ConfigAccessor(this, "skeletons.yml");
 		
@@ -111,6 +129,9 @@ public class StrongMobLoader extends JavaPlugin{
 		
 		//get it.
 		FileConfiguration skeletonConfig = skeletonConfigFile.getConfig();
+		
+		//if the list if empty don't load
+		if(skeletonConfigFile.getMobList().isEmpty()) return false;
 		
 		//get the list of skeleton and load it
 		for(String s : skeletonConfigFile.getMobList()) {
@@ -123,12 +144,13 @@ public class StrongMobLoader extends JavaPlugin{
 		//Create the handler.
 		this.getServer().getPluginManager().registerEvents(new SkeletonHandler(), this);
 		
+		return true;
 	}
 
 	/**
 	 * Load all zombies models.
 	 */
-	private void loadZombies() {
+	private boolean loadZombies() {
 		//Create the config file manager.
 		ConfigAccessor zombieConfigFile = new ConfigAccessor(this, "zombies.yml");
 		
@@ -137,6 +159,9 @@ public class StrongMobLoader extends JavaPlugin{
 		
 		//get it.
 		FileConfiguration zombieConfig = zombieConfigFile.getConfig();
+		
+		//if the list if empty don't load
+		if(zombieConfigFile.getMobList().isEmpty()) return false;
 		
 		//get the list of zombies and load it
 		for(String s : zombieConfigFile.getMobList()) {
@@ -151,6 +176,8 @@ public class StrongMobLoader extends JavaPlugin{
 		
 		//Create the handler.
 		this.getServer().getPluginManager().registerEvents(new ZombieHandler(), this);
+		
+		return true;
 	}
 	
 	private MobModel genericMobLoader(MobModel mmodel,String mobName, FileConfiguration fileConfig) {
