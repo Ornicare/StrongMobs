@@ -1,9 +1,11 @@
 package fr.ornicare.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.server.v1_4_R1.EntityCreeper;
 
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_4_R1.CraftWorld;
@@ -21,6 +23,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import fr.ornicare.models.mobs.CreeperModel;
 import fr.ornicare.storage.MobStorage;
@@ -84,9 +87,40 @@ public class CreeperHandler implements Listener {
 	public void onEntityExplodeEvent(final EntityExplodeEvent e) {
 		if (e.getEntity()!=null && (e==null?null:e.getEntityType()) == EntityType.CREEPER) {
 			Creeper creep = (Creeper)e.getEntity();
-			List<String> explosionTypes = ((CreeperModel)MobStorage.SPAWNONDEATH.get(creep.getUniqueId())).getExplosionTypes();
+			List<String> explosionTypes;
+			
+			double explMult = 1;
+			if(MobStorage.SPAWNONDEATH.containsKey(creep.getUniqueId())) {
+				explosionTypes = ((CreeperModel)MobStorage.SPAWNONDEATH.get(creep.getUniqueId())).getExplosionTypes();
+				explMult = ((CreeperModel)MobStorage.SPAWNONDEATH.get(creep.getUniqueId())).getExplosionRadiusMultiplier();
+				
+			}
+			else {
+				explosionTypes = new ArrayList<String>();
+			}
+			
+			
+			for(PotionEffect pEffect : creep.getActivePotionEffects()) {
+				//if a creeper is poisoned, add poison effect
+				if(pEffect.getType().getName().equals(PotionEffectType.POISON.getName())) {
+					explosionTypes.add("poisonous");
+				}
+				//if a creeper is weak, add poison effect (base config)
+				if(pEffect.getType().getName().equals(PotionEffectType.WEAKNESS.getName())) {
+					explosionTypes.add("poisonous");
+				}
+				//if a creeper is fire resistant, add fire effect
+				if(pEffect.getType().getName().equals(PotionEffectType.FIRE_RESISTANCE.getName())) {
+					explosionTypes.add("fireentity");
+				}
+			}
+			
+			if(creep.getFireTicks()>0) {
+				explosionTypes.add("fireentity");
+			}
+			
 			for(String exp : explosionTypes) {
-				parseExplosionAndCreateIt(creep,exp,((CreeperModel)MobStorage.SPAWNONDEATH.get(creep.getUniqueId())).getExplosionRadiusMultiplier());
+				parseExplosionAndCreateIt(creep,exp,explMult);
 			}
 			
 			e.setCancelled(true);
@@ -113,6 +147,8 @@ public class CreeperHandler implements Listener {
 					enti.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (creep.isPowered()?6:3)*100, power));
 				}
 			}
+			//Visual effect
+			for(int i = 0;i<10;i++) creep.getWorld().playEffect(creep.getLocation().add(new Vector(Math.random(), Math.random(), Math.random())), Effect.POTION_BREAK, 20, 50);
 		}
 		
 		//fireentity
@@ -122,6 +158,8 @@ public class CreeperHandler implements Listener {
 			for(Entity ent : creep.getNearbyEntities(radius,radius,radius)) {
 				ent.setFireTicks((creep.isPowered()?6:3)*100);
 			}
+			//Visual effect (http://wiki.sk89q.com/wiki/CraftBook/MC0210       http://www.lb-stuff.com/Minecraft/PotionDataValues1.9pre3.txt)
+			for(int i = 0;i<10;i++) creep.getWorld().playEffect(creep.getLocation().add(new Vector(Math.random(), Math.random(), Math.random())), Effect.POTION_BREAK, 19, 50);
 		}
 		
 	}
