@@ -34,7 +34,7 @@ public class CreeperHandler implements Listener {
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(final CreatureSpawnEvent e) throws Exception {
-		if (e.getEntityType() == EntityType.CREEPER) {
+		if (e.getEntityType() == EntityType.CREEPER && e.getSpawnReason()!=SpawnReason.CUSTOM) {
 
 
             Creeper creep = (Creeper)e.getEntity();
@@ -62,7 +62,7 @@ public class CreeperHandler implements Listener {
 
         EntityCreeper childSkem = new EntityCreeper(mcWorld);
         childSkem.setPosition(location.getX(), location.getY(), location.getZ());
-    	mcWorld.addEntity(childSkem, SpawnReason.CUSTOM); 
+    	mcWorld.addEntity(childSkem, SpawnReason.NATURAL); 
     	return childSkem;
 	}
 

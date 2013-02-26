@@ -24,7 +24,7 @@ public class ZombieHandler implements Listener {
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(final CreatureSpawnEvent e) throws Exception {
-		if (e.getEntityType() == EntityType.ZOMBIE) {
+		if (e.getEntityType() == EntityType.ZOMBIE && e.getSpawnReason()!=SpawnReason.CUSTOM) {
 
 
             Zombie zomb = (Zombie)e.getEntity();
@@ -52,7 +52,7 @@ public class ZombieHandler implements Listener {
 
         EntityZombie childZombie = new EntityZombie(mcWorld);
         childZombie.setPosition(location.getX(), location.getY(), location.getZ());
-    	mcWorld.addEntity(childZombie, SpawnReason.CUSTOM); 
+    	mcWorld.addEntity(childZombie, SpawnReason.NATURAL); 
     	return childZombie;
 	}
 

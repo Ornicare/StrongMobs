@@ -24,7 +24,7 @@ public class SkeletonHandler implements Listener {
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(final CreatureSpawnEvent e) throws Exception {
-		if (e.getEntityType() == EntityType.SKELETON) {
+		if (e.getEntityType() == EntityType.SKELETON && e.getSpawnReason()!=SpawnReason.CUSTOM) {
 
 
             Skeleton skel = (Skeleton)e.getEntity();
@@ -52,7 +52,7 @@ public class SkeletonHandler implements Listener {
 
         EntitySkeleton childSkem = new EntitySkeleton(mcWorld);
         childSkem.setPosition(location.getX(), location.getY(), location.getZ());
-    	mcWorld.addEntity(childSkem, SpawnReason.CUSTOM); 
+    	mcWorld.addEntity(childSkem, SpawnReason.NATURAL); 
     	return childSkem;
 	}
 
