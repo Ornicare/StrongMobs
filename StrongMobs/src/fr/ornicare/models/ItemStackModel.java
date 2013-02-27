@@ -69,7 +69,7 @@ public class ItemStackModel {
 				if(ench!=null && ench.id == em.getEnchantment().getId() && (Math.random()<em.getProbability())) asItemClone.addEnchantment(ench, MathHelper.randomize(em.getEnchantmentLevel()));
 			}
 		}
-		asItemClone=addLore(asItemClone, "Ceci n'est pas un test");
+		//asItemClone=addLore(asItemClone, "Ceci n'est pas un test");
 		return Math.random()<probability?asItemClone:null;
 	}
 
