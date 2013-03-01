@@ -2,11 +2,13 @@ package fr.ornicare.handlers;
 
 import net.minecraft.server.v1_4_R1.EntityZombie;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_4_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_4_R1.entity.CraftZombie;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +17,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import fr.ornicare.loader.StrongMobLoader;
 import fr.ornicare.models.mobs.ZombieModel;
 import fr.ornicare.storage.MobStorage;
 
@@ -24,6 +27,21 @@ public class ZombieHandler implements Listener {
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(final CreatureSpawnEvent e) throws Exception {
+		
+		/*
+		 * Global limit
+		 */
+		int totalMobs = 0;
+		
+		for(World w : Bukkit.getWorlds()) {
+			totalMobs += w.getEntitiesByClass(Monster.class).size();
+		}
+		
+		if(totalMobs>=StrongMobLoader.MAXMOBS) {
+			e.setCancelled(true);
+			return;
+		}
+		
 		if (e.getEntityType() == EntityType.ZOMBIE && e.getSpawnReason()!=SpawnReason.CUSTOM) {
 
 

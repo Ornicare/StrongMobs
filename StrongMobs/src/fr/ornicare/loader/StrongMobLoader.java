@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +30,8 @@ public class StrongMobLoader extends JavaPlugin{
 	
 	public static Logger LOGGER;
 	public static FileConfiguration CONFIG;
+	public static int MAXMOBS;
+	
 	
 	/**
 	 * Semi paths
@@ -63,11 +67,40 @@ public class StrongMobLoader extends JavaPlugin{
         	 	case "creeper":
         	 		if(loadCreepers()) LOGGER.log(Level.INFO,"Creeper modifier loaded !");
         	 		break;
+        	 	case "changespawnrate":
+        	 		if(loadSpawnRate()) LOGGER.log(Level.INFO,"SpawnRate modifier loaded !");
+        	 		break;
         	 }
         }
 		
 	}
 	
+	/**
+	 * Modify the spawn rate.
+	 */
+	private boolean loadSpawnRate() {
+		//Create the config file manager.
+		ConfigAccessor spRateConfigFile = new ConfigAccessor(this, "spawnrate.yml");
+		
+		//If the config file doesn't exists, create it.
+		spRateConfigFile.saveDefaultConfig();
+		
+		//get it.
+		FileConfiguration spRate = spRateConfigFile.getConfig();
+		
+		int spawnLimit = spRate.getInt("setmonsterspawnlimit",100);
+		int spawnRate = spRate.getInt("settickspermonsterspawns",1);
+		
+		MAXMOBS = spRate.getInt("maxmobs",1000);
+		
+		for(World w : Bukkit.getWorlds()) {
+			w.setMonsterSpawnLimit(spawnLimit);
+			w.setTicksPerMonsterSpawns(spawnRate);
+		}
+		
+		return true;
+	}
+
 	/**
 	 * Load creepers models
 	 */
